@@ -154,40 +154,51 @@ HTML_TEMPLATE = """
             margin: 40px 0;
             position: relative;
         }
-        .hex-grid { position: relative; width: 320px; height: 320px; }
+        .hex-grid { position: relative; width: 280px; height: 280px; }
         .hexagon {
             position: absolute;
-            width: 90px;
-            height: 90px;
+            width: 80px;
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2em;
+            font-size: 1.8em;
             font-weight: bold;
             cursor: pointer;
             user-select: none;
             transition: all 0.2s;
         }
-        .hex-shape {
-            width: 100%;
-            height: 100%;
-            background: #e5e5e5;
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-        .hexagon:hover .hex-shape { background: #d4d4d4; transform: scale(1.05); }
-        .hexagon.center .hex-shape { background: #fbbf24; }
-        .hexagon.center:hover .hex-shape { background: #f59e0b; }
-        .hex-center { top: 115px; left: 115px; }
-        .hex-top { top: 25px; left: 115px; }
-        .hex-top-right { top: 70px; left: 193px; }
-        .hex-bottom-right { top: 160px; left: 193px; }
-        .hex-bottom { top: 205px; left: 115px; }
-        .hex-bottom-left { top: 160px; left: 37px; }
-        .hex-top-left { top: 70px; left: 37px; }
+       .hex-shape {
+       width: 100%;
+       height: 100%;
+       background: #e8e8e8;
+       clip-path: polygon(
+        25% 0%,    /* Top left (pushed out) */
+        75% 0%,    /* Top right (pushed out) */
+        100% 50%,  /* Mid right */
+        75% 100%,  /* Bottom right */
+        25% 100%,  /* Bottom left */
+        0% 50%     /* Mid left */
+       );
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       transition: all 0.2s ease;
+       position: relative;
+       }
+
+        .hexagon:hover .hex-shape { background: #d4d4d4; transform: scale(1.05);
+         border-color: #b0b0b0; }
+        .hexagon.center .hex-shape { background: #fbbf24;  border-color: #f59e0b;}
+        .hexagon.center:hover .hex-shape { background: #f59e0b;
+         border-color: #d97706; }
+        .hex-center { top: 100px; left: 100px; }
+        .hex-top { top: 10px; left: 100px; }
+        .hex-top-right { top: 55px; left: 168px; }
+        .hex-bottom-right { top: 145px; left: 168px; }
+        .hex-bottom { top: 190px; left: 100px; }
+        .hex-bottom-left { top: 145px; left: 32px; }
+        .hex-top-left { top: 55px; left: 32px; }
         .input-area { text-align: center; margin-bottom: 30px; }
         .word-display {
             font-size: 2em;
