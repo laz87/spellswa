@@ -154,7 +154,7 @@ HTML_TEMPLATE = """
             margin: 40px 0;
             position: relative;
         }
-        .hex-grid { position: relative; width: 280px; height: 280px; }
+        .hex-grid { position: relative; width: 280px; height: 200px; }
         .hexagon {
             position: absolute;
             width: 80px;
@@ -193,10 +193,10 @@ HTML_TEMPLATE = """
         .hexagon.center:hover .hex-shape { background: #f59e0b;
          border-color: #d97706; }
         .hex-center { top: 100px; left: 100px; }
-        .hex-top { top: 10px; left: 100px; }
-        .hex-top-right { top: 55px; left: 168px; }
+        .hex-top { top: 15px; left: 100px; }
+        .hex-top-right { top: 60px; left: 168px; }
         .hex-bottom-right { top: 145px; left: 168px; }
-        .hex-bottom { top: 190px; left: 100px; }
+        .hex-bottom { top: 185px; left: 100px; }
         .hex-bottom-left { top: 145px; left: 32px; }
         .hex-top-left { top: 55px; left: 32px; }
         .input-area { text-align: center; margin-bottom: 30px; }
