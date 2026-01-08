@@ -484,7 +484,7 @@ HTML_TEMPLATE = """
         });
 
         updateProgress({{ progress }});
-        showMessage('Changamoto ya leo! Wote tunacheza puzzle hii! 🐝', 'info');
+
     </script>
 </body>
 </html>
