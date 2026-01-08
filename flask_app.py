@@ -260,7 +260,7 @@ HTML_TEMPLATE = """
         .found-words-section h3 { margin-bottom: 15px; color: #333; }
         .word-item {
             padding: 10px;
-            margin-bottom: 8px;
+            margin-bottom: 1px;
             background: #f9fafb;
             border-radius: 8px;
             display: flex;
