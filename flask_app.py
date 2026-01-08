@@ -199,7 +199,7 @@ HTML_TEMPLATE = """
         .hex-bottom { top: 185px; left: 100px; }
         .hex-bottom-left { top: 145px; left: 32px; }
         .hex-top-left { top: 55px; left: 32px; }
-        .input-area { text-align: center; margin-bottom: 30px; }
+        .input-area { text-align: center; margin-bottom: 5px; }
         .word-display {
             font-size: 2em;
             min-height: 1px;
