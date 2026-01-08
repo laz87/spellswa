@@ -154,7 +154,7 @@ HTML_TEMPLATE = """
             margin: 40px 0;
             position: relative;
         }
-        .hex-grid { position: relative; width: 280px; height: 200px; }
+        .hex-grid { position: relative; width: 280px; height: 250px; }
         .hexagon {
             position: absolute;
             width: 80px;
