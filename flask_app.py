@@ -315,6 +315,11 @@ HTML_TEMPLATE = """
                 • <strong>Puzzle mpya kesho!</strong>
             </div>
 
+            <div class="input-area">
+                <div class="word-display" id="currentWord"></div>
+                <div id="message" class="message"></div>
+            </div>
+
             <div class="hexagon-container">
                 <div class="hex-grid">
                     <div class="hexagon center hex-center" data-letter="{{ center }}" onclick="addLetter('{{ center }}')">
@@ -329,14 +334,10 @@ HTML_TEMPLATE = """
                 </div>
             </div>
 
-            <div class="input-area">
-                <div class="word-display" id="currentWord"></div>
-                <div id="message" class="message"></div>
-                <div class="controls">
-                    <button onclick="deleteLetter()">Futa</button>
-                    <button onclick="shuffle()">🔄 Changanya</button>
-                    <button class="btn-enter" onclick="submitWord()">Wasilisha</button>
-                </div>
+            <div class="controls">
+                <button onclick="deleteLetter()">Futa</button>
+                <button onclick="shuffle()">🔄 Changanya</button>
+                <button class="btn-enter" onclick="submitWord()">Wasilisha</button>
             </div>
         </div>
 
