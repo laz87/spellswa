@@ -202,13 +202,13 @@ HTML_TEMPLATE = """
         .input-area { text-align: center; margin-bottom: 30px; }
         .word-display {
             font-size: 2em;
-            min-height: 60px;
+            min-height: 1px;
             display: flex;
             align-items: center;
             justify-content: center;
             letter-spacing: 3px;
             font-weight: 500;
-            margin-bottom: 20px;
+            margin-bottom: 1px;
         }
         .controls { display: flex; gap: 10px; justify-content: center; }
         button {
