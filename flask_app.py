@@ -280,15 +280,7 @@ HTML_TEMPLATE = """
             color: #1e40af;
             font-weight: 600;
         }
-        .instructions {
-            background: #eff6ff;
-            padding: 5px;
-            border-radius: 10px;
-            margin-bottom: 5px;
-            font-size: 0.9em;
-            line-height: 1.6;
-        }
-        .instructions strong { color: #1e40af; }
+
     </style>
 </head>
 <body>
@@ -305,16 +297,7 @@ HTML_TEMPLATE = """
                 <div class="rank-name" id="rank">{{ rank }}</div>
                 <div class="progress" id="progress"></div>
             </div>
-
-            <div class="instructions">
-                <strong>Jinsi ya kucheza:</strong><br>
-                • Bofya herufi au andika neno<br>
-                • Herufi ya kati (njano) lazima iwe katika kila neno<br>
-                • Maneno yawe na herufi 4 au zaidi<br>
-                • Unaweza kutumia herufi mara nyingi<br>
-                • <strong>Puzzle mpya kesho!</strong>
-            </div>
-
+            
             <div class="input-area">
                 <div class="word-display" id="currentWord"></div>
                 <div id="message" class="message"></div>
