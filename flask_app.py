@@ -268,18 +268,6 @@ HTML_TEMPLATE = """
             align-items: center;
         }
         .word-text { font-weight: 600; text-transform: uppercase; }
-        .next-puzzle {
-            background: #eff6ff;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            margin-top: 20px;
-        }
-        .next-puzzle-text {
-            font-size: 0.9em;
-            color: #1e40af;
-            font-weight: 600;
-        }
 
     </style>
 </head>
@@ -349,10 +337,6 @@ HTML_TEMPLATE = """
                     </div>
                     {% endfor %}
                 </div>
-            </div>
-
-            <div class="next-puzzle">
-                <div class="next-puzzle-text">⏰ Puzzle mpya kesho!</div>
             </div>
         </div>
     </div>
