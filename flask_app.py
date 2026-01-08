@@ -282,9 +282,9 @@ HTML_TEMPLATE = """
         }
         .instructions {
             background: #eff6ff;
-            padding: 15px;
+            padding: 5px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
             font-size: 0.9em;
             line-height: 1.6;
         }
