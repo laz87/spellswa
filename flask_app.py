@@ -106,7 +106,23 @@ HTML_TEMPLATE = """
             gap: 30px;
         }
         @media (max-width: 968px) {
-            .container { grid-template-columns: 1fr; }
+            .container { 
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto auto;
+            }
+            .header { 
+                grid-column: 1;
+                grid-row: 1;
+            }
+            .game-area {
+                grid-column: 1;
+                grid-row: 3;
+            }
+            .sidebar {
+                grid-column: 1;
+                grid-row: 2;
+                margin-bottom: 0;
+            }
         }
         .header {
             grid-column: 1 / -1;
@@ -200,6 +216,9 @@ HTML_TEMPLATE = """
         .hex-bottom-left { top: 145px; left: 32px; }
         .hex-top-left { top: 55px; left: 32px; }
         .input-area { text-align: center; margin-bottom: 5px; }
+        @media (max-width: 968px) {
+            .input-area { margin-bottom: 16px; }
+        }
         .word-display {
             font-size: 2em;
             height: 17px;
@@ -281,6 +300,185 @@ HTML_TEMPLATE = """
             font-weight: 600;
         }
 
+        /* ACCORDION STYLES - HIDDEN BY DEFAULT (DESKTOP) */
+        .accordion-header,
+        .accordion-content,
+        .words-grid,
+        .accordion-chevron,
+        .accordion-words-preview,
+        .accordion-summary {
+            display: none;
+        }
+
+        /* MOBILE ACCORDION STYLES (≤968px) */
+        @media (max-width: 968px) {
+            .sidebar {
+                padding: 0;
+                background: transparent;
+                box-shadow: none;
+                max-height: none;
+                overflow-y: visible;
+                margin-bottom: 16px;
+            }
+
+            .score-section {
+                background: white;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 16px;
+                border: 1px solid #e5e7eb;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            }
+
+            .found-words-section {
+                display: none;
+            }
+
+            .next-puzzle {
+                background: #eff6ff;
+                padding: 15px;
+                border-radius: 10px;
+                text-align: center;
+                margin-top: 16px;
+                border: 1px solid #dbeafe;
+            }
+
+            /* ACCORDION HEADER */
+            .accordion-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 14px 16px;
+                background: white;
+                border: 1px solid #e5e7eb;
+                border-radius: 12px;
+                cursor: pointer;
+                user-select: none;
+                transition: background-color 0.2s, border-radius 0.3s;
+                margin-bottom: 16px;
+                min-height: 48px;
+            }
+
+            .accordion-header:hover {
+                background: #fafafa;
+            }
+
+            .accordion-header.expanded {
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+                margin-bottom: 0;
+            }
+
+            .accordion-words-preview {
+                display: flex;
+                gap: 12px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                flex: 1;
+                scroll-behavior: smooth;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            .accordion-words-preview::-webkit-scrollbar {
+                display: none;
+            }
+
+            .accordion-preview-word {
+                flex-shrink: 0;
+                white-space: nowrap;
+                font-size: 15px;
+                font-weight: 500;
+                color: #333;
+            }
+
+            .accordion-preview-word.bold {
+                font-weight: 700;
+            }
+
+            .accordion-chevron {
+                display: flex;
+                flex-shrink: 0;
+                margin-left: 12px;
+                font-size: 20px;
+                color: #666;
+                transition: transform 0.3s ease;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .accordion-chevron.expanded {
+                transform: rotate(180deg);
+            }
+
+            /* ACCORDION CONTENT */
+            .accordion-content {
+                display: none;
+                max-height: 0;
+                overflow: hidden;
+                background: white;
+                border: 1px solid #e5e7eb;
+                border-top: none;
+                border-bottom-left-radius: 12px;
+                border-bottom-right-radius: 12px;
+                transition: max-height 0.3s ease;
+                margin-bottom: 16px;
+            }
+
+            .accordion-content.expanded {
+                display: block;
+                max-height: 400px;
+                overflow-y: auto;
+            }
+
+            .accordion-summary {
+                display: none;
+                font-size: 16px;
+                font-weight: 600;
+                color: #333;
+                padding: 14px 16px;
+            }
+
+            .accordion-summary.expanded {
+                display: block;
+            }
+
+            /* WORDS GRID */
+            .words-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                padding: 0;
+            }
+
+            .word-cell {
+                padding: 12px;
+                font-size: 15px;
+                font-weight: 500;
+                color: #1f2937;
+                text-transform: uppercase;
+                text-align: left;
+                line-height: 1.4;
+                border-bottom: 1px solid #e5e7eb;
+            }
+
+            .word-cell:nth-child(odd) {
+                border-right: 1px solid #e5e7eb;
+            }
+
+            .word-cell:nth-child(even) {
+                border-right: none;
+            }
+
+            .word-cell.bold-word {
+                font-weight: 700;
+            }
+
+            .word-cell:nth-last-child(2),
+            .word-cell:nth-last-child(1) {
+                border-bottom: none;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -337,6 +535,27 @@ HTML_TEMPLATE = """
                 <div class="score-item">
                     <span class="score-label">Zinazowezekana</span>
                     <span class="score-value">{{ total_possible }}</span>
+                </div>
+            </div>
+
+            <!-- ACCORDION COMPONENT FOR MOBILE -->
+            <div class="accordion-header" role="button" aria-expanded="false" aria-label="Toggle found words" tabindex="0" onclick="toggleAccordion()" onkeypress="toggleAccordionKeyboard(event)">
+                <div class="accordion-words-preview" id="wordsPreview">
+                    {% for word in found_words %}
+                    <span class="accordion-preview-word{% if word|length >= 6 %} bold{% endif %}">{{ word }}</span>
+                    {% endfor %}
+                </div>
+                <div class="accordion-chevron" id="accordionChevron">▼</div>
+            </div>
+
+            <div class="accordion-content" id="accordionContent">
+                <div class="accordion-summary" id="accordionSummary">
+                    You have found <span id="wordCountSummary">{{ found_count }}</span> words
+                </div>
+                <div class="words-grid" id="wordsGrid">
+                    {% for word in found_words %}
+                    <div class="word-cell{% if word|length >= 6 %} bold-word{% endif %}">{{ word }}</div>
+                    {% endfor %}
                 </div>
             </div>
 
@@ -435,6 +654,14 @@ HTML_TEMPLATE = """
                     wordItem.innerHTML = `<span class="word-text">${currentWord.toUpperCase()}</span>`;
                     wordList.insertBefore(wordItem, wordList.firstChild);
 
+                    // Update accordion
+                    const words = [];
+                    document.querySelectorAll('.word-cell').forEach(cell => {
+                        words.push(cell.textContent.toLowerCase());
+                    });
+                    words.unshift(currentWord.toLowerCase());
+                    updateAccordion(words);
+
                     updateProgress(data.progress);
                 } else {
                     showMessage(data.message, 'error');
@@ -466,6 +693,77 @@ HTML_TEMPLATE = """
                 submitWord();
             }
         });
+
+        // ACCORDION FUNCTIONS
+        function toggleAccordion() {
+            const header = document.querySelector('.accordion-header');
+            const content = document.getElementById('accordionContent');
+            const chevron = document.getElementById('accordionChevron');
+            const preview = document.querySelector('.accordion-words-preview');
+            const summary = document.getElementById('accordionSummary');
+            
+            const isExpanded = content.classList.contains('expanded');
+            
+            if (isExpanded) {
+                content.classList.remove('expanded');
+                header.classList.remove('expanded');
+                chevron.classList.remove('expanded');
+                preview.style.display = 'flex';
+                summary.classList.remove('expanded');
+                header.setAttribute('aria-expanded', 'false');
+            } else {
+                content.classList.add('expanded');
+                header.classList.add('expanded');
+                chevron.classList.add('expanded');
+                preview.style.display = 'none';
+                summary.classList.add('expanded');
+                header.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        function toggleAccordionKeyboard(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                toggleAccordion();
+            }
+        }
+
+        function updateAccordion(words) {
+            const preview = document.querySelector('.accordion-words-preview');
+            const grid = document.getElementById('wordsGrid');
+            const countSpan = document.getElementById('wordCountSummary');
+            
+            if (!preview || !grid) return;
+            
+            // Clear and update preview
+            preview.innerHTML = '';
+            words.forEach(word => {
+                const span = document.createElement('span');
+                span.className = 'accordion-preview-word';
+                if (word.length >= 6) {
+                    span.classList.add('bold');
+                }
+                span.textContent = word.toUpperCase();
+                preview.appendChild(span);
+            });
+            
+            // Update count
+            if (countSpan) {
+                countSpan.textContent = words.length;
+            }
+            
+            // Update grid
+            grid.innerHTML = '';
+            words.forEach(word => {
+                const cell = document.createElement('div');
+                cell.className = 'word-cell';
+                if (word.length >= 6) {
+                    cell.classList.add('bold-word');
+                }
+                cell.textContent = word.toUpperCase();
+                grid.appendChild(cell);
+            });
+        }
 
         updateProgress({{ progress }});
 
