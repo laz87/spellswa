@@ -246,6 +246,9 @@ HTML_TEMPLATE = """
             max-height: 600px;
             overflow-y: auto;
         }
+        .sidebar + .sidebar {
+            margin-top: 20px;
+        }
         .score-section { margin-bottom: 30px; }
         .score-item {
             display: flex;
@@ -327,7 +330,9 @@ HTML_TEMPLATE = """
                     <span class="score-value">{{ total_possible }}</span>
                 </div>
             </div>
+        </div>
 
+        <div class="sidebar">
             <div class="found-words-section">
                 <h3>Maneno Yaliyopatikana ({{ found_count }})</h3>
                 <div id="foundWords">
