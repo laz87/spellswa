@@ -226,11 +226,11 @@ HTML_TEMPLATE = """
         .btn-enter:hover { background: #333; }
         .message {
             text-align: center;
-            padding: 12px;
-            margin: 15px 0;
+            padding: 1px;
+            margin: 1px 0;
             border-radius: 8px;
             font-weight: 600;
-            min-height: 45px;
+            min-height: 1px;
             display: flex;
             align-items: center;
             justify-content: center;
