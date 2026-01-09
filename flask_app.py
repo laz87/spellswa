@@ -316,23 +316,6 @@ HTML_TEMPLATE = """
         </div>
 
         <div class="sidebar">
-            <div class="score-section">
-                <div class="score-item">
-                    <span class="score-label">Maneno</span>
-                    <span class="score-value" id="wordCount">{{ found_count }}</span>
-                </div>
-                <div class="score-item">
-                    <span class="score-label">Alama</span>
-                    <span class="score-value" id="score">{{ score }}</span>
-                </div>
-                <div class="score-item">
-                    <span class="score-label">Zinazowezekana</span>
-                    <span class="score-value">{{ total_possible }}</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="sidebar">
             <div class="found-words-section">
                 <h3>Maneno Yaliyopatikana ({{ found_count }})</h3>
                 <div id="foundWords">
