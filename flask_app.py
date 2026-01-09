@@ -314,9 +314,8 @@ HTML_TEMPLATE = """
 <body>
     <div class="container">
         <div class="header">
-            <h1>🐝 Spelling Bee - Kiswahili</h1>
-            <p class="subtitle">Tengeneza maneno mengi iwezekanavyo!</p>
-            <div class="daily-badge">📅 Changamoto ya Leo: {{ today_date }}</div>
+            <h1>🐝 Spell Swahili</h1>
+            <div class="daily-badge">📅 {{ today_date }}</div>
         </div>
 
     <div class="game-area">
