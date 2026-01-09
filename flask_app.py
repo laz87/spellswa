@@ -1,7 +1,3 @@
-# ========================================
-# FILE 1: flask_app.py (Main Application)
-# ========================================
-
 from flask import Flask, render_template_string, request, jsonify, session
 import secrets
 from datetime import datetime, timezone
@@ -35,9 +31,7 @@ PUZZLES = [
 
 def get_daily_puzzle():
     """Get the puzzle for today based on date"""
-    # Use UTC date to ensure everyone gets the same puzzle
     today = datetime.now(timezone.utc).date()
-    # Use days since epoch to get a consistent index
     days_since_epoch = (today - datetime(2025, 1, 1).date()).days
     puzzle_index = days_since_epoch % len(PUZZLES)
     return PUZZLES[puzzle_index]
@@ -83,10 +77,8 @@ HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="sw">
 <head>
-
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7910716152647155"
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7910716152647155"
      crossorigin="anonymous"></script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spelling Bee - Kiswahili</title>
@@ -106,7 +98,6 @@ HTML_TEMPLATE = """
             gap: 30px;
             position: relative;
         }
-
         .game-area {
             background: white;
             border-radius: 15px;
@@ -115,6 +106,7 @@ HTML_TEMPLATE = """
             position: relative;
         }
 
+        /* Desktop Sidebar - Keep original */
         .sidebar {
             background: white;
             border-radius: 15px;
@@ -124,7 +116,11 @@ HTML_TEMPLATE = """
             overflow-y: auto;
         }
 
-        /* Desktop: Position sidebar outside */
+        /* Mobile Accordion - Hidden on desktop */
+        .mobile-accordion {
+            display: none;
+        }
+
         @media (min-width: 969px) {
             .sidebar {
                 position: absolute;
@@ -133,25 +129,146 @@ HTML_TEMPLATE = """
                 width: 400px;
             }
         }
+
         @media (max-width: 968px) {
             .container { 
                 grid-template-columns: 1fr;
             }
             
+            /* Hide desktop sidebar on mobile */
             .sidebar {
-                position: static;
-                width: 100%;
-                margin: 20px 0;
-                order: 0;
+                display: none;
+            }
+
+            /* Show mobile accordion */
+            .mobile-accordion {
+                display: block;
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                margin-top: 20px;
+                position: relative;
+                z-index: 100;
+                overflow: hidden;
+            }
+
+            /* Collapsed State */
+            .accordion-collapsed {
+                padding: 12px 16px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                position: relative;
+            }
+
+            .accordion-words-preview {
+                flex: 1;
+                overflow: hidden;
+                white-space: nowrap;
+                position: relative;
+                display: flex;
+                gap: 8px;
+            }
+
+            .accordion-words-preview::after {
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 40px;
+                background: linear-gradient(to right, transparent, white);
+                pointer-events: none;
+            }
+
+            .preview-word {
+                font-size: 0.9em;
+                font-weight: 600;
+                color: #333;
+                text-transform: uppercase;
+            }
+
+            .accordion-chevron {
+                font-size: 1.2em;
+                transition: transform 0.3s ease;
+                flex-shrink: 0;
+            }
+
+            .accordion-chevron.expanded {
+                transform: rotate(180deg);
+            }
+
+            /* Expanded State */
+            .accordion-expanded {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.4s ease;
+            }
+
+            .accordion-expanded.active {
+                max-height: 70vh;
+                overflow-y: auto;
+            }
+
+            .accordion-header {
+                padding: 16px;
+                background: #f9fafb;
+                border-bottom: 1px solid #e5e7eb;
+                cursor: pointer;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .accordion-header h3 {
+                font-size: 1em;
+                color: #333;
+                font-weight: 600;
+            }
+
+            .accordion-content {
+                padding: 16px;
+            }
+
+            .words-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .accordion-word-item {
+                padding: 8px;
+                font-size: 0.85em;
+                font-weight: 600;
+                text-transform: uppercase;
+                text-align: center;
+                border-bottom: 1px solid #e5e7eb;
+            }
+
+            /* Overlay background when expanded */
+            body.accordion-open {
+                overflow: hidden;
+            }
+
+            .mobile-accordion.overlay-active::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.3);
+                z-index: -1;
             }
         }
+
         .header {
             grid-column: 1 / -1;
             text-align: center;
             margin-bottom: 20px;
         }
         h1 { font-size: 2.5em; margin-bottom: 10px; }
-        .subtitle { color: #666; font-size: 1.1em; }
         .daily-badge {
             display: inline-block;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -162,12 +279,6 @@ HTML_TEMPLATE = """
             font-weight: 600;
             margin-top: 10px;
         }
-        .game-area {
-            background: white;
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
         .rank {
             text-align: center;
             margin-bottom: 30px;
@@ -175,8 +286,12 @@ HTML_TEMPLATE = """
             background: #fef3c7;
             border-radius: 10px;
         }
-        .rank-title { font-size: 0.9em; color: #92400e; margin-bottom: 5px; }
         .rank-name { font-size: 1.5em; font-weight: bold; color: #f59e0b; }
+        .score-display {
+            margin-top: 8px;
+        }
+        .score-label { color: #92400e; }
+        .score-value { font-weight: bold; color: #000; }
         .progress { display: flex; gap: 3px; margin-top: 10px; }
         .progress-dot {
             flex: 1;
@@ -205,30 +320,20 @@ HTML_TEMPLATE = """
             user-select: none;
             transition: all 0.2s;
         }
-       .hex-shape {
-       width: 100%;
-       height: 100%;
-       background: #e8e8e8;
-       clip-path: polygon(
-        25% 0%,    /* Top left (pushed out) */
-        75% 0%,    /* Top right (pushed out) */
-        100% 50%,  /* Mid right */
-        75% 100%,  /* Bottom right */
-        25% 100%,  /* Bottom left */
-        0% 50%     /* Mid left */
-       );
-       display: flex;
-       align-items: center;
-       justify-content: center;
-       transition: all 0.2s ease;
-       position: relative;
-       }
-
-        .hexagon:hover .hex-shape { background: #d4d4d4; transform: scale(1.05);
-         border-color: #b0b0b0; }
-        .hexagon.center .hex-shape { background: #fbbf24;  border-color: #f59e0b;}
-        .hexagon.center:hover .hex-shape { background: #f59e0b;
-         border-color: #d97706; }
+        .hex-shape {
+            width: 100%;
+            height: 100%;
+            background: #e8e8e8;
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .hexagon:hover .hex-shape { background: #d4d4d4; transform: scale(1.05); }
+        .hexagon.center .hex-shape { background: #fbbf24; }
+        .hexagon.center:hover .hex-shape { background: #f59e0b; }
         .hex-center { top: 100px; left: 100px; }
         .hex-top { top: 15px; left: 100px; }
         .hex-top-right { top: 60px; left: 168px; }
@@ -274,29 +379,8 @@ HTML_TEMPLATE = """
         }
         .success { background: #d1fae5; color: #065f46; }
         .error { background: #fee2e2; color: #991b1b; }
-        .info { background: #dbeafe; color: #1e40af; }
-        .sidebar {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            max-height: 600px;
-            overflow-y: auto;
-        }
-        .sidebar + .sidebar {
-            margin-top: 20px;
-        }
-        .score-section { margin-bottom: 30px; }
-        .score-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding: 10px;
-            background: #f9fafb;
-            border-radius: 8px;
-        }
-        .score-label { color: #666; }
-        .score-value { font-weight: bold; color: #000; }
+
+        /* Desktop sidebar styles */
         .found-words-section h3 { margin-bottom: 15px; color: #333; }
         .word-item {
             padding: 10px;
@@ -308,7 +392,6 @@ HTML_TEMPLATE = """
             align-items: center;
         }
         .word-text { font-weight: 600; text-transform: uppercase; }
-
     </style>
 </head>
 <body>
@@ -318,7 +401,7 @@ HTML_TEMPLATE = """
             <div class="daily-badge">📅 {{ today_date }}</div>
         </div>
 
-    <div class="game-area">
+        <div class="game-area">
             <div class="rank">
                 <div class="rank-name" id="rank">{{ rank }}</div>
                 <div class="score-display">
@@ -328,6 +411,32 @@ HTML_TEMPLATE = """
                 <div class="progress" id="progress"></div>
             </div>
 
+            <!-- Mobile Accordion -->
+            <div class="mobile-accordion" id="mobileAccordion">
+                <div class="accordion-collapsed" onclick="toggleAccordion()">
+                    <div class="accordion-words-preview" id="wordsPreview">
+                        {% for word in found_words %}
+                        <span class="preview-word">{{ word }}</span>
+                        {% endfor %}
+                    </div>
+                    <span class="accordion-chevron" id="chevron">▼</span>
+                </div>
+                <div class="accordion-expanded" id="accordionExpanded">
+                    <div class="accordion-header" onclick="toggleAccordion()">
+                        <h3>Maneno Yaliyopatikana (<span id="wordCountMobile">{{ found_count }}</span>)</h3>
+                        <span>▲</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="words-grid" id="mobileFoundWords">
+                            {% for word in found_words %}
+                            <div class="accordion-word-item">{{ word }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desktop Sidebar -->
             <div class="sidebar">
                 <div class="found-words-section">
                     <h3>Maneno Yaliyopatikana (<span id="wordCount">{{ found_count }}</span>)</h3>
@@ -371,6 +480,26 @@ HTML_TEMPLATE = """
     <script>
         let currentWord = '';
         const centerLetter = '{{ center }}'.toLowerCase();
+        let accordionOpen = false;
+
+        function toggleAccordion() {
+            accordionOpen = !accordionOpen;
+            const expanded = document.getElementById('accordionExpanded');
+            const chevron = document.getElementById('chevron');
+            const accordion = document.getElementById('mobileAccordion');
+            
+            if (accordionOpen) {
+                expanded.classList.add('active');
+                chevron.classList.add('expanded');
+                accordion.classList.add('overlay-active');
+                document.body.classList.add('accordion-open');
+            } else {
+                expanded.classList.remove('active');
+                chevron.classList.remove('expanded');
+                accordion.classList.remove('overlay-active');
+                document.body.classList.remove('accordion-open');
+            }
+        }
 
         function addLetter(letter) {
             currentWord += letter.toLowerCase();
@@ -436,16 +565,34 @@ HTML_TEMPLATE = """
             .then(data => {
                 if (data.success) {
                     showMessage(data.message, 'success');
+                    
+                    // Update desktop sidebar
                     document.getElementById('wordCount').textContent = data.found_count;
-                    document.getElementById('score').textContent = data.score;
-                    document.getElementById('rank').textContent = data.rank;
-
                     const wordList = document.getElementById('foundWords');
                     const wordItem = document.createElement('div');
                     wordItem.className = 'word-item';
                     wordItem.innerHTML = `<span class="word-text">${currentWord.toUpperCase()}</span>`;
                     wordList.insertBefore(wordItem, wordList.firstChild);
 
+                    // Update mobile accordion
+                    document.getElementById('wordCountMobile').textContent = data.found_count;
+                    
+                    // Add to preview (collapsed state)
+                    const preview = document.getElementById('wordsPreview');
+                    const previewWord = document.createElement('span');
+                    previewWord.className = 'preview-word';
+                    previewWord.textContent = currentWord.toUpperCase();
+                    preview.insertBefore(previewWord, preview.firstChild);
+
+                    // Add to grid (expanded state)
+                    const mobileGrid = document.getElementById('mobileFoundWords');
+                    const gridWord = document.createElement('div');
+                    gridWord.className = 'accordion-word-item';
+                    gridWord.textContent = currentWord.toUpperCase();
+                    mobileGrid.insertBefore(gridWord, mobileGrid.firstChild);
+
+                    document.getElementById('score').textContent = data.score;
+                    document.getElementById('rank').textContent = data.rank;
                     updateProgress(data.progress);
                 } else {
                     showMessage(data.message, 'error');
@@ -479,7 +626,6 @@ HTML_TEMPLATE = """
         });
 
         updateProgress({{ progress }});
-
     </script>
 </body>
 </html>
@@ -489,7 +635,6 @@ HTML_TEMPLATE = """
 def index():
     today_key = get_today_key()
 
-    # Reset session if it's a new day
     if session.get('date') != today_key:
         session.clear()
         session['date'] = today_key
@@ -518,7 +663,6 @@ def index():
 def submit_word():
     today_key = get_today_key()
 
-    # Ensure we're still on the same day
     if session.get('date') != today_key:
         session.clear()
         session['date'] = today_key
