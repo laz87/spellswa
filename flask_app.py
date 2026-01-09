@@ -282,7 +282,7 @@ HTML_TEMPLATE = """
             <div class="daily-badge">📅 Changamoto ya Leo: {{ today_date }}</div>
         </div>
 
-        <div class="game-area">
+    <div class="game-area">
             <div class="rank">
                 <div class="rank-name" id="rank">{{ rank }}</div>
                 <div class="score-display">
@@ -290,6 +290,19 @@ HTML_TEMPLATE = """
                     <span class="score-value" id="score">{{ score }}</span>
                 </div>
                 <div class="progress" id="progress"></div>
+            </div>
+
+            <div class="sidebar">
+                <div class="found-words-section">
+                    <h3>Maneno Yaliyopatikana (<span id="wordCount">{{ found_count }}</span>)</h3>
+                    <div id="foundWords">
+                        {% for word in found_words %}
+                        <div class="word-item">
+                            <span class="word-text">{{ word }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
 
             <div class="input-area">
@@ -315,19 +328,6 @@ HTML_TEMPLATE = """
                 <button onclick="deleteLetter()">Futa</button>
                 <button onclick="shuffle()">🔄 Changanya</button>
                 <button class="btn-enter" onclick="submitWord()">Wasilisha</button>
-            </div>
-        </div>
-
-        <div class="sidebar">
-            <div class="found-words-section">
-                <h3>Maneno Yaliyopatikana (<span id="wordCount">{{ found_count }}</span>)</h3>
-                <div id="foundWords">
-                    {% for word in found_words %}
-                    <div class="word-item">
-                        <span class="word-text">{{ word }}</span>
-                    </div>
-                    {% endfor %}
-                </div>
             </div>
         </div>
     </div>
