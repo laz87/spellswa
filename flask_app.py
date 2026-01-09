@@ -104,9 +104,46 @@ HTML_TEMPLATE = """
             display: grid;
             grid-template-columns: 1fr 400px;
             gap: 30px;
+            position: relative;
+        }
+
+        .game-area {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        /* Desktop: Position sidebar outside */
+        @media (min-width: 969px) {
+            .sidebar {
+                position: absolute;
+                right: -430px;
+                top: 0;
+                width: 400px;
+            }
         }
         @media (max-width: 968px) {
-            .container { grid-template-columns: 1fr; }
+            .container { 
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+                width: 100%;
+                margin: 20px 0;
+                order: 0;
+            }
         }
         .header {
             grid-column: 1 / -1;
