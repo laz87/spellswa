@@ -284,8 +284,11 @@ HTML_TEMPLATE = """
 
         <div class="game-area">
             <div class="rank">
-                <div class="rank-title">Cheo Chako</div>
                 <div class="rank-name" id="rank">{{ rank }}</div>
+                <div class="score-display">
+                    <span class="score-label">Alama:</span>
+                    <span class="score-value" id="score">{{ score }}</span>
+                </div>
                 <div class="progress" id="progress"></div>
             </div>
 
@@ -301,7 +304,7 @@ HTML_TEMPLATE = """
                     </div>
                     {% for letter in outer %}
                     <div class="hexagon hex-{{ ['top', 'top-right', 'bottom-right', 'bottom', 'bottom-left', 'top-left'][loop.index0] }}"
-                         data-letter="{{ letter }}" onclick="addLetter('{{ letter }}')">
+                        data-letter="{{ letter }}" onclick="addLetter('{{ letter }}')">
                         <div class="hex-shape">{{ letter }}</div>
                     </div>
                     {% endfor %}
@@ -317,7 +320,7 @@ HTML_TEMPLATE = """
 
         <div class="sidebar">
             <div class="found-words-section">
-                <h3>Maneno Yaliyopatikana ({{ found_count }})</h3>
+                <h3>Maneno Yaliyopatikana (<span id="wordCount">{{ found_count }}</span>)</h3>
                 <div id="foundWords">
                     {% for word in found_words %}
                     <div class="word-item">
