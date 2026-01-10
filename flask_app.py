@@ -169,6 +169,8 @@ HTML_TEMPLATE = """
                 position: relative;
                 display: flex;
                 gap: 8px;
+                min-width: 0;
+                width: 0;
             }
 
             .accordion-words-preview::after {
