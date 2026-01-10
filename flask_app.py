@@ -147,6 +147,7 @@ HTML_TEMPLATE = """
                 border-radius: 10px;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
                 margin-top: 20px;
+                margin-bottom: 15px;
                 position: relative;
                 z-index: 100;
                 overflow: hidden;
